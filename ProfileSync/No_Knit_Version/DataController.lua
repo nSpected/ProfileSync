@@ -6,6 +6,7 @@ local Players = game:GetService("Players")
 -- RESOURCES --
 local Signal = require(RS.Utils.Signal)
 local TableUtil = require(RS.Utils.TableUtil)
+local Promise = require(RS.Utils.Promise)
 
 local Controller = {
 	Profiles = {},

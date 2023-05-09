@@ -6,6 +6,6 @@ local DataController = require(RS:WaitForChild("DataController"))
 DataController:Init() -- Initialize the Client.
 
 -- TEST --
-while task.wait(1) do
-	print(DataController:GetData(game.Players.LocalPlayer, "Coins")) -- This may not return right away as the data can take a while to load
-end
+DataController.Changed:Connect(function(Player_Data : {}, DataName : string)
+	print(game.Players.LocalPlayer, "'s [", DataName, "] has been changed to: ", Player_Data[DataName])
+end)

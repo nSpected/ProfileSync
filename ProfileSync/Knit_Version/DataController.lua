@@ -9,6 +9,7 @@ local Knit = require(RS.Packages.Knit)
 -- RESOURCES --
 local Signal = require(RS.Utils.Signal)
 local TableUtil = require(RS.Utils.TableUtil)
+local Promise = require(RS.Utils.Promise)
 
 local Controller = Knit.CreateController {
 	Name = "DataController",

@@ -14,6 +14,6 @@ Knit.Start():await()
 local DataController = Knit.GetController("DataController")
 
 -- TEST --
-while task.wait(1) do
-	print(DataController:GetData(game.Players.LocalPlayer, "Coins"))
-end
+DataController.Changed:Connect(function(Player_Data : {}, DataName : string)
+	print(game.Players.LocalPlayer, "'s [", DataName, "] has been changed to: ", Player_Data[DataName])
+end)
