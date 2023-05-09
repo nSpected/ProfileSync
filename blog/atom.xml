@@ -2,11 +2,26 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://nspected.github.io/ProfileSync/blog</id>
     <title>ProfileSync Blog</title>
-    <updated>2023-05-08T00:00:00.000Z</updated>
+    <updated>2023-05-09T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://nspected.github.io/ProfileSync/blog"/>
     <subtitle>ProfileSync Blog</subtitle>
     <icon>https://nspected.github.io/ProfileSync/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Version 1.0.1 Changelog]]></title>
+        <id>https://nspected.github.io/ProfileSync/blog/changelog-v1.0.1</id>
+        <link href="https://nspected.github.io/ProfileSync/blog/changelog-v1.0.1"/>
+        <updated>2023-05-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Overview:]]></summary>
+        <content type="html"><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="overview">Overview:<a href="#overview" class="hash-link" aria-label="Direct link to Overview:" title="Direct link to Overview:">​</a></h2><p>Some small changes have been made to the structure of the Service and Controller. Now the Changed signal
+only fires to the local player in the Client while sending the updated PlayerData and the name of the data
+that has been changed.</p><h3 class="anchor anchorWithStickyNavbar_LWe7" id="improvements">Improvements:<a href="#improvements" class="hash-link" aria-label="Direct link to Improvements:" title="Direct link to Improvements:">​</a></h3><div class="theme-admonition theme-admonition-tip alert alert--success admonition_LlT9"><div class="admonitionHeading_tbUL"><span class="admonitionIcon_kALy"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"></path></svg></span>tip</div><div class="admonitionContent_S0QG"><ul><li><code>DataController.Changed</code> now fires the full player data, along with the name of the data that was changed.</li><li><code>DataController.Changed</code> now only fires to the local player, though that can sometimes not be seen as an improvement depending on your personal use cases. It can be easily reverted if chosen to.</li><li><code>DataController.Changed</code> doesn't send only the data that was changed, but the full player data now too, which should make it more convenient for the developer.</li></ul></div></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="fixes">Fixes:<a href="#fixes" class="hash-link" aria-label="Direct link to Fixes:" title="Direct link to Fixes:">​</a></h3><div class="theme-admonition theme-admonition-caution alert alert--warning admonition_LlT9"><div class="admonitionHeading_tbUL"><span class="admonitionIcon_kALy"><svg viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>caution</div><div class="admonitionContent_S0QG"><ul><li>The example local script has been updated to use the <code>.Changed</code> event instead of a while loop, the while loop was a mistake of my part as it was totally unnecessary and provided more bad than good to this.</li></ul></div></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="known-issues">Known Issues:<a href="#known-issues" class="hash-link" aria-label="Direct link to Known Issues:" title="Direct link to Known Issues:">​</a></h3><div class="theme-admonition theme-admonition-warning alert alert--danger admonition_LlT9"><div class="admonitionHeading_tbUL"><span class="admonitionIcon_kALy"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M5.05.31c.81 2.17.41 3.38-.52 4.31C3.55 5.67 1.98 6.45.9 7.98c-1.45 2.05-1.7 6.53 3.53 7.7-2.2-1.16-2.67-4.52-.3-6.61-.61 2.03.53 3.33 1.94 2.86 1.39-.47 2.3.53 2.27 1.67-.02.78-.31 1.44-1.13 1.81 3.42-.59 4.78-3.42 4.78-5.56 0-2.84-2.53-3.22-1.25-5.61-1.52.13-2.03 1.13-1.89 2.75.09 1.08-1.02 1.8-1.86 1.33-.67-.41-.66-1.19-.06-1.78C8.18 5.31 8.68 2.45 5.05.32L5.03.3l.02.01z"></path></svg></span>danger</div><div class="admonitionContent_S0QG"><ul><li>None for now!! YUPIII!!!</li></ul></div></div>]]></content>
+        <author>
+            <name>Goop_Dev</name>
+            <uri>https://github.com/nSpected</uri>
+        </author>
+        <category label="changelog" term="changelog"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Version 1.0.0 Changelog]]></title>
         <id>https://nspected.github.io/ProfileSync/blog/changelog-v1.0.0</id>

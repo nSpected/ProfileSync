@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkarklight_docs=self.webpackChunkarklight_docs||[]).push([[535],{5641:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Version 1.0.1 Changelog","permalink":"/ProfileSync/blog/changelog-v1.0.1"},{"title":"Version 1.0.0 Changelog","permalink":"/ProfileSync/blog/changelog-v1.0.0"}]}')}}]);

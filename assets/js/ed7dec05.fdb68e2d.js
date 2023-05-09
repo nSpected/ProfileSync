@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkarklight_docs=self.webpackChunkarklight_docs||[]).push([[445],{5076:l=>{l.exports=JSON.parse('{"label":"changelog","permalink":"/ProfileSync/blog/tags/changelog","allTagsPath":"/ProfileSync/blog/tags","count":2}')}}]);
