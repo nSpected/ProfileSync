@@ -1,6 +1,6 @@
 # 🌟 Introduction
 
-![profile-sync-banner](/img/ps-banner.png)
+![profile-sync-banner](https://github.com/nSpected/ProfileSync/blob/c5e65a3384372a0f51b931a47bb4cd4214766e9e/img/ps-banner.png)
 
 **ProfileSync** is a powerful and user-friendly Profile Managing module designed to streamline the setup and replication of Player Data in your Roblox games. By leveraging the reliability of [ProfileService](https://github.com/MadStudioRoblox/ProfileService), ProfileSync ensures that your game can handle high volumes of data with ease.
 
