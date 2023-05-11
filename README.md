@@ -1,7 +1,5 @@
 ---
-
 permalink: /index.html
-
 ---
 
 # ProfileSync
