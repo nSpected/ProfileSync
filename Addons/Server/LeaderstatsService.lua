@@ -17,7 +17,7 @@ DataService.Changed:Connect(function(Player : Player, Player_Data : {}, DataName
 end)
 
 function Service:InitPlayer(Player : Player, Player_Data : {}, DataToShow : { string }?)
-    if not DataToShow or typeof(DataToShow) ~= 'table' or typeof(DataToShow) ~= 'string' then return end
+    if not DataToShow or typeof(DataToShow) ~= 'table' or not DataToShow[1] or typeof(DataToShow[1]) ~= 'string' then return end
     
     local Leaderstats = Instance.new("Folder")
     Leaderstats.Name = "leaderstats"
