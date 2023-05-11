@@ -1,51 +1,59 @@
-# ProfileSync
+# 🌟 Introduction
+
+![profile-sync-banner](https://github.com/nSpected/ProfileSync/blob/c5e65a3384372a0f51b931a47bb4cd4214766e9e/img/ps-banner.png)
 
 **ProfileSync** is a powerful and user-friendly Profile Managing module designed to streamline the setup and replication of Player Data in your Roblox games. By leveraging the reliability of [ProfileService](https://github.com/MadStudioRoblox/ProfileService), ProfileSync ensures that your game can handle high volumes of data with ease.
 
 ProfileSync offers seamless synchronization between Server and Client data, allowing for real-time updates without the need for remote functions. This ensures that your game's players always have access to the latest data, while you can focus on creating an engaging and immersive experience. Unlock the full potential of data management in your Roblox projects with ProfileSync!
 
-## Getting Started
+## 🚀 Getting Started
 
-Get started by getting the module in one of these places: 
-- **[Github](https://github.com/nSpected/ArklightRBLX/releases/tag/Release)**
-- **[Roblox Library](https://www.roblox.com/library/13385972417/DataService-v1-0-0)**
+Get started by getting the module from one of these sources: 
+- **[Github](https://github.com/nSpected/ProfileSync/releases)**
+- **[Roblox Library](https://www.roblox.com/library/13397074576/ProfileSync-v1-0-1)**
 
-### What you'll need
+### 📦 What you'll need
 
 - **[Knit](https://github.com/Sleitnick/Knit) v1.5.1 or above**, if you choose to go with the Knit version.
 - Some scripting knowledge, as this is only a small module that aims to make it a bit more practical to set and get data from both client and server, but it does not do anything by itself.
 
-### Setting up
+## 🛠️ Setting up
 
-- Drag and drop and **.rbxm** file inside your place, or take it from the Roblox Library (Toolbox).
-- Ungroup the version you're going to use in ```ReplicatedStorage```.
-  - If you are using **Knit**, you may already have a folder for your Services and Controllers, so you can just move ```DataController``` and ```DataService``` to their respective folder.
+- Drag and drop the ```.rbxm``` file into your place, or find it in the Roblox Library (Toolbox) and add it to your game.
+- Ungroup the version you're going to use, placing it in the ```ReplicatedStorage```.
+  - If you are using the ```Knit``` framework, you may already have designated folders for your Services and Controllers. In this case, move the ```DataController``` and ```DataService``` modules to their respective folders.
 
-For people who are using **Knit**, you are ready to go as the module will initialize by default when Knit starts.
+:::tip You're All Set!
+For those using Knit, you're all set! :white_check_mark: The module will initialize automatically when Knit starts :rocket:, and you're ready to take advantage of **ProfileSync** in your Roblox project :joystick:.
+:::
 
-### No Knit - Extra
+## :wrench: No Knit - Required Extra Steps 
+:::caution
+This is only for those who are not using Knit!
+:::
+
 You need to require the module manually in both client and server, you can do it by:
-- Inside a script in ```ServerScriptService``` require the **DataService** module, and run the init function:
+- Inside a script in ```ServerScriptService``` require the **DataService** module, and run the ```:Init()``` function:
 
 ```lua
 local DataService = require(Path.To.DataService) -- Change this to the DataService module.
 DataService:Init()
 ```
 
-- Now inside a LocalScript in ```StarterPlayerScripts```, require the **DataController** module, and run the init function:
+- Now, inside a LocalScript in ```StarterPlayerScripts```, require the **DataController** module, and run the ```:Init()``` function:
 
 ```lua	
 local DataController = require(Path.To.DataController) -- Change this to the DataController module.
 DataController:Init()
 ```
 
-- **You're all set now!**
+- :tada: **You're all set now!**
 
-## Usage Example - KNIT
+## 💡 Usage Example - KNIT
 
 - Since you probably want to use the actual benefits of this module, here's an example of how you can use it:
 
-- SERVER:
+### 🌐 SERVER:
 ```lua
   -- SERVICES --
   local RS = game:GetService("ReplicatedStorage")
@@ -71,7 +79,7 @@ DataController:Init()
   end):catch(warn)
 ```
 
-- CLIENT:
+### 🖥️ CLIENT:
 ```lua
   -- SERVICES --
   local RS = game:GetService("ReplicatedStorage")
@@ -89,16 +97,16 @@ DataController:Init()
   local DataController = Knit.GetController("DataController")
 
   -- TEST --
-  while task.wait(1) do
-    print(DataController:GetData(game.Players.LocalPlayer, "Coins"))
-  end
+  DataController.Changed:Connect(function(Player_Data : {}, DataName : string)
+	  print(game.Players.LocalPlayer, "'s [", DataName, "] has been changed to: ", Player_Data[DataName])
+  end)
 ```
 
-## Usage Example - NO KNIT
+## 💡 Usage Example - NO KNIT
 
 - And here's an example of how you can use it without Knit:
 
-- SERVER:
+### 🌐 SERVER:
 ```lua
   -- SERVICES --
   local RS = game:GetService("ReplicatedStorage")
@@ -117,7 +125,7 @@ DataController:Init()
   end)
 ```
 
-- CLIENT:
+### 🖥️ CLIENT:
 ```lua
   -- SERVICES --
   local RS = game:GetService("ReplicatedStorage")
@@ -127,7 +135,8 @@ DataController:Init()
   DataController:Init() -- Initialize the Client.
 
   -- TEST --
-  while task.wait(1) do
-    print(DataController:GetData(game.Players.LocalPlayer, "Coins")) -- This may not return right away as the data can take a while to load
-  end
+  DataController.Changed:Connect(function(Player_Data : {}, DataName : string)
+	  print(game.Players.LocalPlayer, "'s [", DataName, "] has been changed to: ", Player_Data[DataName])
+  end)
 ```
+
