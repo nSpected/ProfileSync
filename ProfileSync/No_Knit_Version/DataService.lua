@@ -18,7 +18,7 @@ local Service = {
 		Communicator = Instance.new("RemoteFunction")
 	},
 
-	DataChanged = Signal.new(),
+	Changed = Signal.new(),
 	Profiles = {},
 	
 	Server_Initialized = false,
@@ -29,8 +29,8 @@ local Profile_Store = Profile_Service.GetProfileStore("Development_0.1", Save_St
 -- // --
 
 -- LISTEN TO DATA CHANGES --
-Service.DataChanged:Connect(function(Player : Player, Data_Name : string, New_Value : any)
-	Service.Client.Changed:FireAllClients(Data_Name, New_Value, Player)
+Service.Changed:Connect(function(Player : Player, Player_Data : {}, Data_Name : string)
+	Service.Client.Changed:FireAllClients(Player, Player_Data[Data_Name], Data_Name)
 end)
 -- // --
 
@@ -113,7 +113,7 @@ function Service:Add(Player : Player, DataName : string, Value : number)
 	if typeof(Player_Data[DataName]) ~= 'number' then errorWarning("Add", "PlayerData.DataName must be a NUMBER.") return end
 
 	Player_Data[DataName] += Value
-	Service.DataChanged:Fire(Player, DataName, Player_Data[DataName])
+	Service.Changed:Fire(Player, Player_Data, DataName)
 
 	return Player_Data[DataName]
 end
@@ -131,7 +131,7 @@ function Service:Sub(Player : Player, DataName : string, Value : number)
 	if typeof(Player_Data[DataName]) ~= 'number' then errorWarning("Sub", "PlayerData.DataName must be a NUMBER.") return end
 
 	Player_Data[DataName] -= Value
-	Service.DataChanged:Fire(Player, DataName, Player_Data[DataName])
+	Service.Changed:Fire(Player, Player_Data, DataName)
 
 	return Player_Data[DataName]
 end
@@ -147,7 +147,7 @@ function Service:Edit(Player : Player, DataName : string, Value : any)
 	if not Player_Data[DataName] then errorWarning("General", "Invalid DataName.") return end
 
 	Player_Data[DataName] = Value
-	Service.DataChanged:Fire(Player, DataName, Player_Data[DataName])
+	Service.Changed:Fire(Player, Player_Data, DataName)
 
 	return Player_Data[DataName]
 end
@@ -165,7 +165,7 @@ function Service:TableAdd(Player : Player, DataName : string, Value : string | n
 	if typeof(Player_Data[DataName]) ~= 'table' then errorWarning("TableAdd", "PlayerData.DataName must be a TABLE.") return end
 
 	table.insert(Player_Data[DataName], Value)
-	Service.DataChanged:Fire(Player, DataName, Player_Data[DataName])
+	Service.Changed:Fire(Player, Player_Data, DataName)
 
 	return Player_Data[DataName]
 end
@@ -186,7 +186,7 @@ function Service:TableRemove(Player : Player, DataName : string, Value : string 
 	if not Index then errorWarning("TableRemove", "VALUE was not found in the given DATANAME.") return end
 
 	table.remove(Player_Data[DataName], Index)
-	Service.DataChanged:Fire(Player, DataName, Player_Data[DataName])
+	Service.Changed:Fire(Player, Player_Data, DataName)
 
 	return Player_Data[DataName]
 end
@@ -205,7 +205,7 @@ function Service:DictionaryAdd(Player : Player, DataName : string, Value : strin
 	if typeof(Player_Data[DataName]) ~= 'table' then errorWarning("DictionaryAdd", "PlayerData.DataName must be a TABLE.") return end
 
 	Player_Data[DataName][Index] = Value
-	Service.DataChanged:Fire(Player, DataName, Player_Data[DataName])
+	Service.Changed:Fire(Player, Player_Data, DataName)
 
 	return Player_Data[DataName], Player_Data[DataName][Index]
 end
@@ -223,7 +223,7 @@ function Service:DictionaryRemove(Player : Player, DataName : string, Index : st
 	if typeof(Player_Data[DataName]) ~= 'table' then errorWarning("DictionaryRemove", "PlayerData.DataName must be a TABLE.") return end
 
 	Player_Data[DataName][Index] = nil
-	Service.DataChanged:Fire(Player, DataName, Player_Data[DataName])
+	Service.Changed:Fire(Player, Player_Data, DataName)
 
 	return Player_Data[DataName], Player_Data[DataName][Index]
 end

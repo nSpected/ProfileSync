@@ -55,13 +55,16 @@ function Controller:KnitStart()
 		print("[", UserID," Profile]: ", Controller.Profiles[UserID])
 	end)	
 
-	DataService.Changed:Connect(function(Data_Name : string, New_Value : any, Player : Player)
+	DataService.Changed:Connect(function(Player : Player, New_Value : any, Data_Name : string)
 		if Controller.Profiles[Player.UserId] == nil then warn(Player, " has not been init in this client.") return end
 		if Controller.Profiles[Player.UserId] == true then return end
 		if not Controller.Profiles[Player.UserId][Data_Name] then warn(Data_Name, " is not a valid client data.", Player) return end
-
+		
 		Controller.Profiles[Player.UserId][Data_Name] = New_Value
-		Controller.Changed:Fire(Data_Name, New_Value, Player)
+		
+		if Player == Players.LocalPlayer then -- You can edit this part if you wish to fire the changed signal to changes on every player data (not limited to local player).
+			Controller.Changed:Fire(Controller.Profiles[Player.UserId], Data_Name)
+		end
 	end)
 
 	Players.PlayerRemoving:Connect(function(Player : Player)
