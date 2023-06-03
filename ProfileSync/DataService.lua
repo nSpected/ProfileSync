@@ -3,28 +3,23 @@ local RS = game:GetService("ReplicatedStorage")
 local CS = game:GetService("CollectionService")
 local Players = game:GetService("Players")
 
--- FRAMEWORKS --
-local Knit = require(RS.Packages.Knit)
-
 -- MODULES --
 local Profile_Service = require(script.ProfileService)
 local Save_Structure = require(script.SaveStructure)
 
 -- RESOURCES --
 local Signal = require(RS.Utils.Signal)
+local Red = require(RS.Utils.Red)
+
+-- NET --
+local Net = Red.Server("DataService")
 
 -- MAIN --
-local Service = Knit.CreateService{
-	Name = "DataService",
-
-	Client = {
-		Changed = Knit.CreateSignal(),	
-		Initialized = Knit.CreateSignal(),
-	},
-
+local Service = {
 	Changed = Signal.new(),
 	Profiles = {},
-	Server_Initialized = false,
+	
+	Initialized = false,
 }
 
 -- SETUP THE SERVICE --
@@ -32,8 +27,8 @@ local Profile_Store = Profile_Service.GetProfileStore("Development_0.1", Save_St
 -- // --
 
 -- LISTEN TO DATA CHANGES --
-Service.Changed:Connect(function(Player : Player, Player_Data : {}, Data_Name : string)
-	Service.Client.Changed:FireAll(Player, Player_Data[Data_Name], Data_Name)
+Service.Changed:Connect(function(Player : Player, Player_data : {}, Data_Name : string)
+	Net:FireAll("Changed", Player, Player_data[Data_Name], Data_Name)
 end)
 -- // --
 
@@ -54,8 +49,8 @@ end
 
 -- INIT THE PLAYER --
 function Service:Init_Player(Player : Player)
-	if self.Profiles[Player.UserId] ~= nil then return end
-	self.Profiles[Player.UserId] = true
+	if Service.Profiles[Player.UserId] ~= nil then return end
+	Service.Profiles[Player.UserId] = true
 
 	-- MAKE A THREAD FOR EACH PLAYER
 	task.spawn(function()
@@ -76,26 +71,27 @@ function Service:Init_Player(Player : Player)
 
 		-- PLAYER JOINED ANOTHER SESSTION
 		Player_Profile:ListenToRelease(function()
-			self.Profiles[Player.UserId] = nil
+			Service.Profiles[Player.UserId] = nil
 			Player:Kick("Data has been loaded on another session, please rejoin. If the issue persists, please contact the support!")
 		end)
 
 		if Player:IsDescendantOf(Players) then -- In case the player left before getting to this stage, so we check to make sure.
-			self.Profiles[Player.UserId] = Player_Profile
+			Service.Profiles[Player.UserId] = Player_Profile
 		else -- If he left, we release his profile.
 			Player_Profile:Release()
-		end	
-
+		end
+		
 		-- INIT CLIENT AFTER DATA LOADED --
 		warn(Player, " | Data Service Loaded - Load Time: ", string.sub(tostring(tick() - Start_Tick), 1, 6), Player_Profile.Data) -- Comment this out if you don't need it, it's only visible to developers anyway
 		CS:AddTag(Player, "Data_Loaded") -- This way you can check on both client and server if the player data has been loaded already, you can use attributes if prefered.
-		self.Client.Initialized:FireAll(Player_Profile.Data, Player.UserId) -- Replicate the new player data to all players
-
+		Net:FireAll("Init", Player_Profile.Data, Player.UserId) -- Replicate the new player data to all players
+		
 		-- REPLICATE THE DATA OF PREVIOUS PLAYERS TO THE JOINING PLAYER
 		task.spawn(function()
 			for _, plr in ipairs(Players:GetPlayers()) do
-				if self.Profiles[plr.UserId] == true or self.Profiles[plr.UserId] == nil then continue end
-				self.Client.Initialized:Fire(Player, self.Profiles[plr.UserId].Data, plr.UserId)
+				if plr == Player then continue end
+				if Service.Profiles[plr.UserId] == true or Service.Profiles[plr.UserId] == nil then continue end
+				Net:Fire(Player, "Init", Service.Profiles[plr.UserId].Data, plr.UserId)
 			end
 		end)
 	end)
@@ -254,39 +250,45 @@ end
 -- // --
 
 -- SERVICE INITIALIZATION --
-function Service:KnitInit()
+function Service:Init()
 	-- FETCH EXISTING PLAYERS, IF ANY --
 	for _, Player : Player in ipairs(Players:GetPlayers()) do
 		self:Init_Player(Player)
 	end
-	-- // --
 
 	-- LISTEN FOR NEW PLAYERS --
 	Players.PlayerAdded:Connect(function(Player : Player)
 		self:Init_Player(Player)
 	end)
-	-- // --
 
 	-- CLEAR REMOVING PLAYERS DATA --
 	Players.PlayerRemoving:Connect(function(Player : Player)
 		if self.Profiles[Player.UserId] == nil or self.Profiles[Player.UserId] == true then return end
 		self.Profiles[Player.UserId]:Release()
 	end)
-	-- // --
 	
 	-- FINISH --
-	Service.Server_Initialized = true
+	Service.Initialized = true
 end
 -- // --
 
 -- CLIENT ACCESS --
-function Service.Client:GetProfile(Player : Player)
-	return Service:GetProfile(Player)
-end
+Net:On("Comm", function(Player : Player, Action : string, ...)
+	local Args = {...}
 
-function Service.Client:GetData(Player : Player, DataName : string)
-	return Service:GetData(Player, DataName)
-end
+	if Action == "GetProfile" then
+		local Target : Player = Args[1]
+		if not Target then return end
+
+		return Service:GetProfile(Target)
+	elseif Action == "GetData" then
+		local Target : Player = Args[1]
+		local DataName : string = Args[2]
+		if not Target or not DataName then return end
+
+		return Service:GetData(Target, DataName)
+	end
+end)
 -- // --
 
 return Service
