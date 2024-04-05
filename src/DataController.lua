@@ -82,7 +82,7 @@ function UpdatePlayerFromServer(player: Player)
 		if _debug then warn(player, " data fetch promise has been finished.") end
 	end)
 	
-	player.Destroying:Once(function()
+	player.AncestryChanged:Once(function()
 		fetchPromise:cancel()
 		_profilesBeingUpdated[player.UserId] = nil
 		Profiles[player.UserId] = nil

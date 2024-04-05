@@ -99,7 +99,7 @@ function GetDataStoreProfile(player: Player)
 		profile:AddUserId(player.UserId)
 		profile:Reconcile()
 		
-		-- PLAYER JOINED ANOTHER SESSTION
+		-- PLAYER JOINED ANOTHER SESSION
 		profile:ListenToRelease(function()
 			Profiles[player.UserId] = nil
 			player:Kick("Data has been loaded on another session, please rejoin. If the issue persists, please contact the support!")
@@ -385,9 +385,16 @@ local function initPlayer(player: Player)
 		if _debug then 
 			warn(player, " | Data Loaded - Load Time: ", string.sub(tostring(os.clock() - t), 1, 6), profile) 
 		end
+		
+		task.wait(3)
+		
+		warn(Profiles, Bindings)
+		if player then
+			player:Kick()
+		end
 	end):catch(warn)
 	
-	player.Destroying:Once(function()
+	player.AncestryChanged:Once(function()
 		loadPromise:cancel()
 		_profilesBeingUpdated[player.UserId] = nil
 		Profiles[player.UserId] = nil
@@ -399,6 +406,9 @@ local function initPlayer(player: Player)
 
 			Bindings[player.UserId] = nil
 		end
+		
+		warn(Profiles)
+		warn(Bindings)
 	end)
 end
 
