@@ -109,10 +109,13 @@ function GetDataStoreProfile(player: Player)
 			Profiles[player.UserId] = profile.Data
 		else -- If he left, we release his profile.
 			profile:Release()
+			reject()
 		end
 		
 		player:AddTag(_loadedTag)
 		_profilesBeingUpdated[player.UserId] = nil
+		
+		task.wait(25)
 		resolve(profile.Data)
 	end)
 end
@@ -384,13 +387,6 @@ local function initPlayer(player: Player)
 	local loadPromise = GetDataStoreProfile(player):andThen(function(profile)
 		if _debug then 
 			warn(player, " | Data Loaded - Load Time: ", string.sub(tostring(os.clock() - t), 1, 6), profile) 
-		end
-		
-		task.wait(3)
-		
-		warn(Profiles, Bindings)
-		if player then
-			player:Kick()
 		end
 	end):catch(warn)
 	

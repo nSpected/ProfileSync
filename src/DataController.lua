@@ -71,12 +71,11 @@ function FetchServerProfile(player: Player, usePromise: boolean?, maxAttempts: n
 end
 
 function UpdatePlayerFromServer(player: Player)
-	if not IsPlayerValid(player) then warn(12) return end
-	if _profilesBeingUpdated[player.UserId] then warn(43) return end
+	if not IsPlayerValid(player) then return end
+	if _profilesBeingUpdated[player.UserId] then return end
 	
 	local fetchPromise = FetchServerProfile(player, true):andThen(function(profile)
 		if profile == nil then return end
-		local CachedProfile = Profiles[player.UserId] or {}
 		Profiles[player.UserId] = profile
 	end):catch(warn):finally(function()
 		if _debug then warn(player, " data fetch promise has been finished.") end
@@ -166,7 +165,7 @@ function Controller:GetData(player: Player, dataName: string, timeOut: number?, 
 			end
 		end)
 	else
-		local profile = Controller:GetProfile(player, timeOut, false)
+		local profile = Controller:GetProfile(player, timeOut, false) or {}
 		return profile[dataName]
 	end
 end
@@ -222,7 +221,7 @@ DataReplicator.OnClientEvent:Connect(function(...: any)
 	
 	local profile = Profiles[player.UserId]
 	if not Profiles[player.UserId] then return end
-	if profile[dataName] ~= nil and typeof(profile[dataName]) ~= typeof(value) then return end
+	--if profile[dataName] ~= nil and typeof(profile[dataName]) ~= typeof(value) then return end
 	
 	Profiles[player.UserId][dataName] = value
 	
