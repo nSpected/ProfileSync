@@ -1,18 +1,47 @@
-local AddonTypes = require(script.AddonTypes) --// Will error if not getting from the rbxm file.
+local AddonTypes = require(script.AddonTypes)
 
 --// This is your data structure, you should change it to fit your game needs.
 --// This is the same as a SaveStructure in ProfileService.
 local STRUCTURE = {
 	Preferences = {
+		Trading = "All", --// All, Friends, None
 		Music = true,
 		SFX = true
 	},
 	
+	Level = 1,
 	EXP = 0,
 	MaxEXP = 100,
+	
 	Coins = 0,
+	Gems = 50,
+	
+	Strength = 0,
+	Magic = 0,
+	Defense = 0,
+	
+	Inventory = {},
+	InventoryCapacity = 100,
+	
+	Weapon = "None",
+	Spells = {},
+	
+	Helmet = "None",
+	Chestplate = "None",
+	Legwear = "None",
+	
+	Vanity = {
+		Weapon = "None",
+		Helmet = "None",
+		Chestplate = "None",
+		Legwear = "None",
+	},
 	
 	Passes = {},
+	Boosters = {},
+	
+	LastJoin = -1,
+	LoginStreak = 0,
 }
 --// ─────────────────────────────────────────────────────────────── //--
 
@@ -28,7 +57,14 @@ local DEVELOPMENT_ENVIRONMENT: boolean = (game:GetService('RunService'):IsStudio
 local FILTER_TYPE: "Blacklist" | "Whitelist" = "Blacklist"
 
 --// Array of strings, put the name of the Data that you want to filter.
-local FILTER_LIST = {}
+local FILTER_LIST = {
+	'Boosters',
+	'Gamepasses'
+}
+
+--// "Light": Each player's data is shared among all players in the game.
+--// "Heavy": Only the player who owns the data will have access to it.
+local FILTER_STRICTNESS: "Light" | "Heavy" = "Light"
 
 --// Dictionary of addons, it might not work very well yet, so keep it empty for now.
 --// You can see more about it in the official documentation: 
@@ -36,7 +72,7 @@ local FILTER_LIST = {}
 local ADDONS: AddonTypes.Addons = {
 	Attributes = true,
 	Leaderstats = {
-		dataToShow = {'Coins'}
+		dataToShow = {'EXP', 'MaxEXP', 'Level'}
 	}
 }
 
@@ -47,12 +83,14 @@ return {
 	["Structure"] = STRUCTURE,
 	["FilterType"] = FILTER_TYPE,
 	["Filter"] = FILTER_LIST,
+	["FilterStrictness"] = FILTER_STRICTNESS,
 	
 	--// Should not be changed, but I won't stop you.
 	["Attributes"] = {
 		["Debug"] = true,
 		["LoadedTag"] = "Data_Loaded",
 		["InitializedTag"] = "Data_Initialized",
+		["FilterStrictness"] = FILTER_STRICTNESS,
 		["Addons"] = game:GetService('HttpService'):JSONEncode(ADDONS)
 	},
 	
